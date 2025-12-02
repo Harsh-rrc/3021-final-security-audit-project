@@ -30,64 +30,6 @@
       ],
       "fixAvailable": true
     },
-    "express": {
-      "name": "express",
-      "severity": "low",
-      "isDirect": true,
-      "via": [
-        {
-          "source": 1111086,
-          "name": "express",
-          "dependency": "express",
-          "title": "express improperly controls modification of query properties",
-          "url": "https://github.com/advisories/GHSA-pj86-cfqh-vqx6",
-          "severity": "low",
-          "cwe": [
-            "CWE-915"
-          ],
-          "cvss": {
-            "score": 0,
-            "vectorString": null
-          },
-          "range": ">=5.0.0 <5.2.0"
-        }
-      ],
-      "effects": [],
-      "range": "5.0.0 - 5.1.0",
-      "nodes": [
-        "node_modules/express"
-      ],
-      "fixAvailable": true
-    },
-    "form-data": {
-      "name": "form-data",
-      "severity": "critical",
-      "isDirect": false,
-      "via": [
-        {
-          "source": 1109538,
-          "name": "form-data",
-          "dependency": "form-data",
-          "title": "form-data uses unsafe random function in form-data for choosing boundary",
-          "url": "https://github.com/advisories/GHSA-fjxv-7rqg-78g4",
-          "severity": "critical",
-          "cwe": [
-            "CWE-330"
-          ],
-          "cvss": {
-            "score": 0,
-            "vectorString": null
-          },
-          "range": ">=4.0.0 <4.0.4"
-        }
-      ],
-      "effects": [],
-      "range": "4.0.0 - 4.0.3",
-      "nodes": [
-        "node_modules/form-data"
-      ],
-      "fixAvailable": true
-    },
     "glob": {
       "name": "glob",
       "severity": "high",
@@ -150,19 +92,19 @@
   "metadata": {
     "vulnerabilities": {
       "info": 0,
-      "low": 1,
+      "low": 0,
       "moderate": 2,
       "high": 1,
-      "critical": 1,
-      "total": 5
+      "critical": 0,
+      "total": 3
     },
     "dependencies": {
       "prod": 68,
-      "dev": 476,
-      "optional": 51,
-      "peer": 24,
+      "dev": 455,
+      "optional": 27,
+      "peer": 0,
       "peerOptional": 0,
-      "total": 543
+      "total": 522
     }
   }
 }
