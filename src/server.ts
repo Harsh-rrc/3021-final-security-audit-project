@@ -1,16 +1,37 @@
-export function greet(name: string): string {
-    const message = "Hello, " + name; // Place breakpoint here for debugging
-    console.log(message);
-    return message;
-}
+import express from 'express';
 
-export function add(a: number, b: number): number {
-    const result = a + b; // Place breakpoint here for debugging
-    return result;
-}
+const app = express();
+const port = 3000;
 
-// Run the function when executed directly
-if (require.main === module) {
-    greet("World");
-    add(5, 3);
-}
+app.get('/greet', (req, res) => {
+    const name = req.query.name as string;
+    res.send(`<h1>Hello, ${name}</h1>`); // Potential XSS vulnerability if name contains script
+});
+
+app.get('/exec', (req, res) => {
+    const cmd = req.query.cmd as string;
+    const { exec } = require('child_process');
+    exec(cmd, (error: any, stdout: string, stderr: string) => {
+        if (error) {
+            res.send(`Error: ${error.message}`);
+            return;
+        }
+        res.send(stdout);
+    }); // Command injection vulnerability
+});
+
+app.get('/file', (req, res) => {
+    const path = req.query.path as string;
+    const fs = require('fs');
+    fs.readFile(path, 'utf8', (err: any, data: string) => {
+        if (err) {
+            res.send('File not found');
+            return;
+        }
+        res.send(data);
+    }); // Path traversal vulnerability
+});
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
