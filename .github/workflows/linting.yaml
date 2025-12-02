@@ -1,32 +1,38 @@
-name: TypeScript Lint and Reviewdog
+name: CodeQL Security Scan
+
 on:
-    pull_request:
-        branches:
-            - main
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '30 1 * * 0' # Run weekly at 1:30 AM UTC on Sunday
+
 jobs:
-    lint:
-        runs-on: ubuntu-latest
-        steps:
-            # Step 1: Checkout the code
-            - name: Checkout code
-              uses: actions/checkout@v3
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
-            # Step 2: Setup Node.js
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "20.x"
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'python' ] # Add your project's languages
 
-            # Step 3: Install ESLint for development
-            - name: Install ESLint for development
-              run: npm install --save-dev eslint @eslint/js @types/eslint__js typescript typescript-eslint
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-            # Step 4: Run ESLint with Reviewdog
-            - name: Run ESLint with Reviewdog
-              uses: reviewdog/action-eslint@v1
-              with:
-                  reporter: github-pr-review
-                  eslint_flags: "-c eslint.config.mjs **/*.{ts,tsx}"
-                  level: error
-              env:
-                  REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
